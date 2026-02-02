@@ -355,8 +355,10 @@ def music_status(
 async def _check_music_status(generation_id: str, output: Optional[Path]):
     """Check generation status and download if ready."""
     from ai_content.providers.aimlapi.client import AIMLAPIClient
+    from ai_content.core.job_tracker import get_tracker, JobStatus
 
     client = AIMLAPIClient()
+    tracker = get_tracker()
     console.print(f"[cyan]Checking status for: {generation_id}[/cyan]")
 
     try:
@@ -391,19 +393,26 @@ async def _check_music_status(generation_id: str, output: Optional[Path]):
                 output.write_bytes(audio_data)
                 console.print(f"[green]✅ Saved to {output}[/green]")
                 console.print(f"   Size: {len(audio_data) / (1024 * 1024):.2f} MB")
+                # Update job tracker
+                tracker.update_status(generation_id, JobStatus.DOWNLOADED, str(output))
             elif audio_url:
                 console.print(f"[cyan]Audio URL: {audio_url}[/cyan]")
                 console.print("[yellow]Use --output to download[/yellow]")
+                tracker.update_status(generation_id, JobStatus.COMPLETED)
             else:
                 console.print("[yellow]Audio URL not found in response[/yellow]")
                 console.print(f"Response: {status}")
+                tracker.update_status(generation_id, JobStatus.COMPLETED)
 
         elif state.lower() in ("queued", "pending", "processing"):
             console.print("[yellow]Still processing. Check again later.[/yellow]")
             console.print(f"Run: uv run ai-content music-status {generation_id}")
+            if state.lower() == "processing":
+                tracker.update_status(generation_id, JobStatus.PROCESSING)
         elif state.lower() in ("failed", "error"):
             error = status.get("error") or status.get("message") or "Unknown error"
             console.print(f"[red]❌ Generation failed: {error}[/red]")
+            tracker.update_status(generation_id, JobStatus.FAILED)
         else:
             console.print("[yellow]Unknown status. Full response:[/yellow]")
             console.print(f"{status}")

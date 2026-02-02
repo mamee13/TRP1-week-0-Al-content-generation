@@ -111,6 +111,11 @@ help:
 	@echo "🎬 Video (Kling - High Quality, 5-14min):"
 	@echo "  make video-kling    - Fantasy (highest quality)"
 	@echo ""
+	@echo "📊 Job Tracking:"
+	@echo "  make jobs           - List tracked jobs"
+	@echo "  make jobs-stats     - View job statistics"
+	@echo "  make jobs-sync      - Sync pending job status"
+	@echo ""
 	@echo "🛠️ Custom Generation:"
 	@echo "  make music-custom PROMPT='jazz fusion' PROVIDER=lyria"
 	@echo "  make video-custom PROMPT='dragon flying' PROVIDER=veo"
@@ -122,3 +127,13 @@ help:
 	@echo ""
 	@echo "📘 Docs: docs/architecture/ARCHITECTURE.md"
 	@echo ""
+
+# --- Job Tracking ---
+jobs:
+	uv run ai-content jobs
+
+jobs-stats:
+	uv run ai-content jobs-stats
+
+jobs-sync:
+	uv run ai-content jobs-sync --download

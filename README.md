@@ -10,6 +10,7 @@ A multi-provider AI content generation framework for music, video, and images.
 - **Multi-Provider Architecture**: Google (Lyria, Veo, Imagen), AIMLAPI (MiniMax), KlingAI
 - **Plugin System**: Add new providers without modifying core code
 - **Style Presets**: Pre-configured prompts for jazz, blues, cinematic, and more
+- **Job Tracking**: SQLite-based persistence with duplicate detection and cost management
 - **Async-First**: Non-blocking operations with proper async/await
 - **Type-Safe**: Full type hints with Pydantic configuration
 - **CLI Interface**: Easy-to-use command-line tool
@@ -169,6 +170,103 @@ ai-content/
 python examples/01_basic_music.py jazz
 python examples/06_music_video_pipeline.py cinematic space
 ```
+
+## 📊 Job Tracking & Cost Management
+
+The framework includes a robust job tracking system to manage long-running AI generation requests, prevent duplicate API calls, and monitor costs.
+
+### Key Features
+
+- **Persistent SQLite Storage**: Jobs saved to `~/.ai-content/jobs.db`
+- **Duplicate Detection**: MD5 hash-based detection prevents redundant API calls
+- **Status Lifecycle**: `queued` → `processing` → `completed` → `downloaded` (or `failed`)
+- **Cost Awareness**: Track API usage to manage expenses
+
+### Workflow for Long-Running Jobs
+
+Some providers (like MiniMax) can take 5-15 minutes to complete. Use this workflow:
+
+```bash
+# 1. Submit generation (returns immediately with job ID)
+uv run ai-content music \
+  --prompt "Smooth bachata fusion" \
+  --provider minimax \
+  --lyrics data/lyrics.txt
+
+# If it times out, note the generation_id printed
+
+# 2. Check status later
+uv run ai-content music-status <generation_id>
+
+# 3. Download when complete
+uv run ai-content music-status <generation_id> \
+  --output output/music/my_track.mp3
+```
+
+### Managing Jobs
+
+```bash
+# List all jobs
+uv run ai-content jobs
+
+# Filter by status
+uv run ai-content jobs --status queued
+uv run ai-content jobs --status completed
+
+# Filter by provider
+uv run ai-content jobs --provider minimax
+
+# View statistics
+uv run ai-content jobs-stats
+
+# Sync pending jobs (check API status)
+uv run ai-content jobs-sync
+
+# Sync and auto-download completed
+uv run ai-content jobs-sync --download
+```
+
+### Duplicate Prevention
+
+Running the same prompt twice will detect the duplicate:
+
+```bash
+# First run - generates normally
+uv run ai-content music --prompt "Jazz fusion" --provider minimax
+
+# Second run - detects duplicate
+uv run ai-content music --prompt "Jazz fusion" --provider minimax
+# ⚠️ Duplicate found (already completed)
+#    Job ID: abc123...
+#    Output: output/music/...
+#    Use --force to generate anyway
+
+# Force regeneration if needed
+uv run ai-content music --prompt "Jazz fusion" --provider minimax --force
+```
+
+### Manually Registering Past Jobs
+
+If you ran a generation before job tracking was enabled:
+
+```python
+from ai_content.core.job_tracker import get_tracker
+
+tracker = get_tracker()
+tracker.create_job(
+    generation_id="your-generation-id",
+    provider="minimax",
+    content_type="music",
+    prompt="Your original prompt",
+    command="ai-content music --prompt ...",
+)
+```
+
+Then sync to get current status:
+```bash
+uv run ai-content jobs-sync --download
+```
+
 
 
 
