@@ -41,7 +41,6 @@ uv.lock
 
 # === IDE & Editor ===
 .idea/
-.vscode/
 *.swp
 *.swo
 *~
@@ -84,3 +83,7 @@ docs/Operationalizing the 2026 Agentic Talent Framework*.md
 
 # === Agent Brain (conversation artifacts) ===
 .gemini/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

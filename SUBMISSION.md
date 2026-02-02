@@ -122,6 +122,5 @@ Mapping out the logic, in the world between.
 ---
 
 ## 8. Links
-- **YouTube Showcase**: [Link Placeholder]
+- **YouTube Showcase**: https://www.youtube.com/watch?v=SLiVG7GfJHE&feature=youtu.be   added an ai generated image to upload into youtube
 - **GitHub Repository**: https://github.com/mamee13/TRP1-week-0-Al-content-generation
-- **Generated Tracks**: [output/](output/)
