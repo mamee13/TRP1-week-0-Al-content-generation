@@ -114,6 +114,19 @@ fashion photography aesthetic, high-end commercial,
     style_keywords=["portrait", "fashion", "beauty"],
 )
 
+VAPORWAVE = VideoPreset(
+    name="vaporwave",
+    prompt="""A magenta-tinted sunset over a low-poly ocean,
+3D wireframe mountains in the distance,
+retro-futuristic shopping mall aesthetic with marble statues,
+VHS glitch effects and chromatic aberration,
+glitch art, aesthetic, 1980s computer graphics style""",
+    aspect_ratio="16:9",
+    duration=5,
+    style_keywords=["vaporwave", "glitch", "retro"],
+)
+
+
 
 # Registry of all presets
 VIDEO_PRESETS: dict[str, VideoPreset] = {
@@ -126,6 +139,7 @@ VIDEO_PRESETS: dict[str, VideoPreset] = {
         OCEAN,
         FANTASY,
         PORTRAIT,
+        VAPORWAVE,
     ]
 }
 

@@ -59,7 +59,7 @@ class AIMLAPISettings(BaseSettings):
     music_model: str = "minimax/music-2.0"
     lyria_model: str = "google/lyria2"
     kling_model: str = "klingai/v2.1-master-text-to-video"
-    wan_model: str = "alibaba/wan-2.6-t2v"
+    wan_model: str = "alibaba/wan-2.1-t2v"
 
     # Timeouts (MiniMax music can take 15-30 minutes)
     request_timeout: int = 60
@@ -91,6 +91,28 @@ class KlingSettings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_prefix="KLINGAI_",
+        env_file=".env",
+        extra="ignore",
+    )
+
+
+class KieSettings(BaseSettings):
+    """Kie AI API configuration."""
+
+    api_key: str = Field(default="", alias="KIEAI_API_KEY")
+    base_url: str = "https://api.kie.ai"
+
+    # Defaults
+    model: str = "veo3_fast"
+    aspect_ratio: str = "16:9"
+
+    # Timeouts
+    poll_interval: int = 15
+    max_poll_attempts: int = 100
+
+    model_config = SettingsConfigDict(
+        env_prefix="KIEAI_",
+        env_file=".env",
         extra="ignore",
     )
 
@@ -132,6 +154,7 @@ class Settings(BaseSettings):
     google: GoogleSettings = Field(default_factory=GoogleSettings)
     aimlapi: AIMLAPISettings = Field(default_factory=AIMLAPISettings)
     kling: KlingSettings = Field(default_factory=KlingSettings)
+    kie: KieSettings = Field(default_factory=KieSettings)
 
     model_config = SettingsConfigDict(
         env_file=".env",

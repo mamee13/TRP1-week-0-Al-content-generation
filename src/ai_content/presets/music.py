@@ -162,6 +162,31 @@ Lusophone African sound, sensual and hypnotic""",
     tags=["kizomba", "zouk", "african"],
 )
 
+CYBERPUNK = MusicPreset(
+    name="cyberpunk",
+    prompt="""[Dark Synthwave]
+[Heavy Distorted Bass, Aggressive Lead Synths]
+[80s Drum Machine, Industrial Textures]
+[Glitchy Arps, Dark Atmosphere]
+Cyber-enhanced futuristic sounds, gritty and energetic""",
+    bpm=120,
+    mood="gritty",
+    tags=["synthwave", "retrofuturistic", "industrial"],
+)
+
+TENX_SPECIAL = MusicPreset(
+    name="tenx-special",
+    prompt="""[Elite Agentic Coding Fusion]
+[Dynamic Polyphonic Synths, Rapid 16th Note Arpeggios]
+[Deep Sub Bass, Cinematic Orchestral Stabs]
+[High-Tech Sound Design, Intelligent Progressions]
+Computational excellence, visionary and powerful""",
+    bpm=140,
+    mood="visionary",
+    tags=["intelligence", "agentic", "quantum"],
+)
+
+
 
 # Registry of all presets
 MUSIC_PRESETS: dict[str, MusicPreset] = {
@@ -178,6 +203,8 @@ MUSIC_PRESETS: dict[str, MusicPreset] = {
         SALSA,
         BACHATA,
         KIZOMBA,
+        CYBERPUNK,
+        TENX_SPECIAL,
     ]
 }
 

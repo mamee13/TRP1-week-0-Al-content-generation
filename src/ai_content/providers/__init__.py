@@ -8,6 +8,7 @@ Import this module to register all available providers.
 from ai_content.providers import google
 from ai_content.providers import aimlapi
 from ai_content.providers import kling
+from ai_content.providers import kie
 
 # Re-export providers
 from ai_content.providers.google import (
@@ -22,6 +23,9 @@ from ai_content.providers.aimlapi import (
 from ai_content.providers.kling import (
     KlingDirectProvider,
 )
+from ai_content.providers.kie import (
+    KieVideoProvider,
+)
 
 __all__ = [
     # Google
@@ -33,4 +37,6 @@ __all__ = [
     "MiniMaxMusicProvider",
     # Kling
     "KlingDirectProvider",
+    # Kie
+    "KieVideoProvider",
 ]

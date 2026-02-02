@@ -223,7 +223,7 @@ async def _generate_music(
 @app.command()
 def video(
     prompt: str = typer.Option(..., "--prompt", "-p", help="Scene description"),
-    provider: str = typer.Option("veo", "--provider", help="Provider: veo, kling"),
+    provider: str = typer.Option("veo", "--provider", help="Provider: veo, kling, kie"),
     style: Optional[str] = typer.Option(None, "--style", "-s", help="Preset style name"),
     aspect: str = typer.Option("16:9", "--aspect", "-a", help="Aspect ratio"),
     duration: int = typer.Option(5, "--duration", "-d", help="Duration in seconds"),
@@ -291,8 +291,8 @@ async def _generate_video(
 
     _print_result(result)
 
-
 # === Utility Commands ===
+
 
 
 @app.command()
